@@ -1,9 +1,10 @@
 const ModelCategoria = require("../models/categoria_model");
+const { utilHandler } = require("../middlewares/middleware_error");
 
 /**
  * Guardar Categoria
  */
-const guardar = (req, res) => {
+const guardar = (req, res, next) => {
   console.log(req.body);
 
   const data = { categoria_nombre: req.body.categoria_nombre };
@@ -11,6 +12,7 @@ const guardar = (req, res) => {
   const documento = ModelCategoria(data);
 
   documento.save((err, doc) => {
+    if (err) return utilHandler(doc, next, err);
     console.log(err);
     return res.json({
       data: doc,
